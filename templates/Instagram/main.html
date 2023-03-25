@@ -222,8 +222,6 @@
                               style="cursor: pointer; color: {% if i.is_liked %}red{% else %}black{% endif %}">
                             {% if i.is_liked %}favorite{% else %}favorite_border{% endif %}
                         </span>
-                        <span class="material-icons-outlined">mode_comment</span>
-                        <span class="material-icons-outlined">send</span>
                     </div>
                     <div>
                         <span id="bookmark_{{ i.id }}" feed_id="{{ i.id }}" class="bookmark material-icons-outlined"
@@ -242,9 +240,6 @@
                     <div style="font-weight: 500; margin-right: 5px">{{ i.nickname }}</div>
                     <div>{{ i.content }}</div>
                 </div> <!--내용-->
-                <div class="feed_txt" style="color: gray">
-                    댓글 {{ i.reply_count }}개 모두 보기
-                </div> <!--댓글 개수-->
                 <div id="reply_list_{{ i.id }}">
                     {% for j in i.reply_list %}
                         <div class="feed_comment">
@@ -255,14 +250,11 @@
                         </div> <!--댓글-->
                     {% endfor %}
                 </div>
-                <div class="feed_txt" style="font-size: 11px; color: gray">
-                    21시간 전
-                </div> <!--업로드 시간-->
                 <div class="feed_txt"
                      style="font-size: 11px; color: gray; display: flex; flex-direction: row; justify-content: space-between">
                     <input id="reply_{{ i.id }}" type="text" placeholder="댓글 달기..."
                            style="box-shadow: none; border: none; outline: none; background: #FAFAFA">
-                    <div feed_id="{{ i.id }}" class="upload_reply" style="width: 50px">게시</div>
+                    <div feed_id="{{ i.id }}" class="upload_reply" style="width: 50px; cursor: pointer">게시</div>
                 </div> <!--댓글 달기-->
                 <hr>
             </div> <!--게시물1-->
