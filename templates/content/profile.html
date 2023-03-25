@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!-- Google Icon -->
+    <link
+            href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+            rel="stylesheet">
+
+    <!--jQuery-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+<style>
+    .box {
+        width: 50px;
+        height: 50px;
+        border-radius: 70%;
+        overflow: hidden;
+    }
+
+    .square {
+        display: block;
+        overflow: hidden;
+    }
+
+    .square img {
+        display: block;
+        min-width: 100%;
+        min-height: 100%;
+        object-fit: cover;
+    }
+
+    .main_body {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        justify-content: center;
+        padding-top: 64px;
+        background: #FAFAFA
+    }
+
+    .left_body {
+        width: 500px;
+        height: 100%;
+        margin-right: 300px;
+        background: #FAFAFA;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .right_body {
+        width: 400px;
+        height: 1000px;
+        background: #FAFAFA;
+        position: fixed;
+        left: 62%;
+        padding-left: 20px;
+    }
+
+    .profile {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .profile_id {
+        font-size: 15px;
+        margin: 5px
+    }
+
+    .feed_img {
+        width: 100%;
+    {#object-fit: contain;#}
+    }
+
+    .feed_icon {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 5px;
+    {#margin-left: 10px#}
+    }
+
+    .feed_like {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    {#margin-left: 10px#}
+    }
+
+    .feed_like_profile {
+        width: 23px;
+        height: 23px;
+        border-radius: 70%;
+        margin-right: 10px
+    }
+
+    .feed_like_info {
+        text-align: left;
+        font-size: 13px
+    }
+
+    .feed_txt {
+        font-size: 13px;
+        text-align: left;
+        margin-top: 5px;
+    {#margin-left: 10px;#} margin-bottom: 5px;
+    }
+
+    .feed_comment {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        font-size: 13px;
+        text-align: left;
+        margin-top: 3px;
+    {#margin-left: 10px;#} margin-bottom: 3px;
+    }
+
+    .profile_right {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .modal_overlay {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(1.5px);
+        -webkit-backdrop-filter: blur(1.5px);
+    }
+
+    .modal_window {
+        background: white;
+        backdrop-filter: blur(13.5px);
+        -webkit-backdrop-filter: blur(13.5px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        width: 800px;
+        height: 600px;
+        position: relative;
+        padding: 10px;
+    }
+
+    .profile_class {
+        margin: 0 40px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        font-size: 13px
+    }
+</style>
+
+<body style="background-color: #FAFAFA; height: 1000px">
+<nav class="navbar navbar-expand-lg bg-light" style="position: fixed;width: 100%; z-index: 3">
+    <div class="container-fluid" style="justify-content: space-between;flex-wrap: nowrap;min-width: 1000px">
+        <!--정렬 방법-->
+        <a class="navbar-brand" href="/main"><img style="width: 100px"
+                                                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png">
+        </a>
+        <!-- 로고 -->
+        <input class="form-control me-2" type="search" placeholder="검색" aria-label="Search" style="width:200px">
+        <!-- 검색창 -->
+        <div style="display: flex">
+            <a href="/main" style="color: #0f0f0f"><span class="material-icons"
+                                                         style="padding-right: 5px">home</span></a>
+            <span class="material-icons-outlined" style="padding-right: 5px">send</span>
+            <span id="nav_bar_add_box" class="material-icons-outlined" style="padding-right: 5px; cursor: pointer">add_box</span>
+            <span class="material-icons-outlined" style="padding-right: 5px">explore</span>
+            <span class="material-icons-outlined" style="padding-right: 5px">favorite_border</span>
+            <div class="dropdown">
+                <a href="#" role="button" id="dropdownMenuLink"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="square" style="width: 22px; height: 22px">
+                        <img src="{% get_media_prefix %}{{ user.profile_image }}"
+                             class="box" style="width: 22px; height: 22px">
+                    </div>
+                </a>
+                <ul class="dropdown-menu" style="left: -158px; font-size: 12px" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="/content/profile">내 프로필</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="/user/logout">로그아웃</a></li>
+                </ul>
+
+                <!-- 아이콘들 -->
+            </div>
+        </div>
+    </div>
+</nav> <!--내비게이션 바-->
+<div style="display: flex; flex-direction: row; padding-top: 100px; text-align: center; justify-content: left; padding-left: 200px">
+    <div style="padding: 10px 130px">
+        <div class="square" style="width: 125px; height: 125px">
+            <img src="{% get_media_prefix %}{{ user.profile_image }}"
+                 class="box" style="width: 125px; height: 125px">
+        </div>
+    </div>
+    <div style="text-align: left; margin: 10px 10px 10px 40px;">
+        <div style="display: flex; flex-direction: row; align-items: center">
+            <div style="font-size: 23px; margin-bottom: 15px; font-weight: 300; margin-right: 30px">
+                {{ user.nickname }}
+            </div>
+            <button style="font-size: 13px; margin-top: 5px; margin-bottom: 15px; font-weight: 300; margin-right: 30px; border: none"
+                    id="button_profile_upload">
+                <b>프로필 편집</b>
+            </button>
+            <input type="file" id="input_fileupload" onchange="profile_upload()" style="display: none">
+            <span class="material-icons-outlined" style="margin-top: 7px; margin-right: 20px; margin-bottom: 15px">settings</span>
+        </div>
+        <div style="font-size: 15px; margin-bottom: 15px; display: flex; flex-direction: row; font-weight: 600">
+            <div style="margin-right: 50px">
+                게시물 {{ feed_count }}
+            </div>
+            <div style="margin-right: 50px">
+                팔로워 0
+            </div>
+            <div>
+                팔로잉 0
+            </div>
+        </div>
+        <div style="font-size: 15px; margin-bottom: 8px; font-weight: 600">
+            {{ user.name }}
+        </div>
+    </div>
+</div>
+<div>
+    <div style="position: relative">
+        <div style="border-top: solid 1px lightgray; width: 80%; margin-top: 10px; margin-left: 10%"></div>
+        <div id="border_1" style="border-top: solid 2px black; width: 100px; margin-left: 572px; margin-top: -1px"></div>
+    </div>
+    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding-top: 20px">
+        <div id="button_feed" class="profile_class" style="cursor: pointer; color: black"><span
+                class="material-icons-outlined"
+                id="button_feed_2"
+                style="font-size: 15px; margin-right: 5px; margin-top: 3px; color: black">grid_on</span><b>게시물</b>
+        </div>
+        <div id="button_like" class="profile_class" style="cursor: pointer; color: gray"><span
+                class="material-icons-outlined" id="button_like_2"
+                style="font-size: 15px; margin-right: 5px; margin-top: 3px; color: gray">favorite_border</span><b>좋아요</b>
+        </div>
+        <div id="button_bookmark" class="profile_class" style="cursor: pointer; color: gray"><span
+                class="material-icons-outlined" id="button_bookmark_2"
+                style="font-size: 15px; margin-right: 5px; margin-top: 3px; color: gray">bookmark_border</span><b>저장됨</b>
+        </div>
+    </div>
+</div>
+<div id="feed_list" style="width: 100%; min-width: 1300px; display: flex; justify-content: center; margin-top: 20px">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1068px">
+        {% for feed in feed_list %}
+            <div style="margin: 3px">
+                <img src="{% get_media_prefix %}{{ feed.image }}"
+                     class="feed_img"
+                     style="width: 350px; height: 350px; object-fit: cover">
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="like_feed_list"
+     style="width: 100%; min-width: 1300px; display: none; justify-content: center; margin-top: 20px">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1068px;">
+        {% for feed in like_feed_list %}
+            <div style="margin: 3px">
+                <img src="{% get_media_prefix %}{{ feed.image }}"
+                     class="feed_img"
+                     style="width: 350px; height: 350px; object-fit: cover">
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="bookmark_feed_list"
+     style="width: 100%; min-width: 1300px; display: none; justify-content: center; margin-top: 20px">
+    <div style="display: flex; flex-direction: row; flex-wrap: wrap; width: 1068px">
+        {% for feed in bookmark_feed_list %}
+            <div style="margin: 3px">
+                <img src="{% get_media_prefix %}{{ feed.image }}"
+                     class="feed_img"
+                     style="width: 350px; height: 350px; object-fit: cover">
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div id="first_modal" class="modal_overlay" style="z-index: 4">
+    <div class="modal_window">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="width: 24px"></div>
+            <div>
+                <b>새 게시물 만들기</b>
+            </div>
+            <div>
+                <span class="modal_close material-icons-outlined">close</span>
+            </div>
+        </div>
+        <div class="img_upload_space"
+             style="background: white; width: 778px; height: 540px; margin-top: 10px"></div>
+    </div>
+
+</div> <!--첫 번째 모달-->
+
+<div id="second_modal" class="modal_overlay" style="z-index: 4">
+    <div class="modal_window">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="width: 24px"></div>
+            <div>
+                <b>새 게시물 만들기</b>
+            </div>
+            <div>
+                <span class="modal_close material-icons-outlined">close</span>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <div class="img_upload_space"
+                 style="background: white; width: 500px; height: 540px; margin: 10px;"></div>
+            <div style="margin: 10px; border-left: 1px solid gray">
+                <div><textarea id="input_feed_content" class="form-control" rows="5"
+                               style="width: 400px; height: 400px; box-shadow: none; border: none; outline: none; margin-left: 5px"></textarea>
+                </div>
+                <button id="feed_create_button" type="button" class="btn btn-primary"
+                        style="width: 100%; margin-left: 5px">게시
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div> <!--두 번째 모달-->
+</body>
+<!-- Optional JavaScript; choose one of the two! -->
+<script>
+    $('#button_feed').click(function () {
+        $('#border_1').css({
+            marginLeft: "572px"
+        })
+        $('#button_feed,#button_feed_2').css({
+            color: "black"
+        })
+        $('#button_like,#button_like_2').css({
+            color: "gray"
+        })
+        $('#button_bookmark,#button_bookmark_2').css({
+            color: "gray"
+        })
+        $('#feed_list').css({
+            display: "flex"
+        })
+        $('#like_feed_list').css({
+            display: "none"
+        })
+        $('#bookmark_feed_list').css({
+            display: "none"
+        })
+    })
+    $('#button_like').click(function () {
+        $('#border_1').css({
+            marginLeft: "713px"
+        })
+        $('#button_feed,#button_feed_2').css({
+            color: "gray"
+        })
+        $('#button_like,#button_like_2').css({
+            color: "black"
+        })
+        $('#button_bookmark,#button_bookmark_2').css({
+            color: "gray"
+        })
+        $('#feed_list').css({
+            display: "none"
+        })
+        $('#like_feed_list').css({
+            display: "flex"
+        })
+        $('#bookmark_feed_list').css({
+            display: "none"
+        })
+    })
+    $('#button_bookmark').click(function () {
+        $('#border_1').css({
+            marginLeft: "854px"
+        })
+        $('#button_feed,#button_feed_2').css({
+            color: "gray"
+        })
+        $('#button_like,#button_like_2').css({
+            color: "gray"
+        })
+        $('#button_bookmark,#button_bookmark_2').css({
+            color: "black"
+        })
+        $('#feed_list').css({
+            display: "none"
+        })
+        $('#like_feed_list').css({
+            display: "none"
+        })
+        $('#bookmark_feed_list').css({
+            display: "flex"
+        })
+    })
+    let files;
+    $('#nav_bar_add_box').click(function () {
+        $('#first_modal').css({ //모달1 열기
+            display: "flex"
+        })
+        $(document.body).css({ //스크롤바 가리기
+            overflow: "hidden"
+        })
+    }) //게시물 추가 버튼 클릭 시
+    $('#feed_create_button').click(function () {
+        alert('게시 눌렀다.');
+        let file = files[0]; //파일 및 데이터 정리
+        let image = files[0].name;
+        let content = $('#input_feed_content').val();
+
+        let fd = new FormData();
+
+        fd.append('file', file);
+        fd.append('image', image);
+        fd.append('content', content);
+
+        $.ajax({
+            url: "/content/upload",
+            data: fd,
+            method: "POST",
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log('성공');
+            },
+            error: function (request, status, error) {
+                console.log('에러');
+            },
+            complete: function () {
+                console.log('완료');
+                location.replace("/main");
+            }
+
+        }) //views.py의 UploadFeed Class로 보내기
+    }) //게시 버튼 클릭 시
+    $('.img_upload_space')
+        .on("dragover", dragOver)
+        .on("dragleave", dragOver)
+        .on("drop", uploadFiles);
+
+    function dragOver(e) {
+        e.stopPropagation(); <!--dd-->
+        e.preventDefault();
+        if (e.type == "dragover") { <!--타입이 dragover라면 배경 검정색, e : 이벤트 정보, 마우스의 행위 -->
+            $(e.target).css({
+                "background-color": "gray",
+                "outline-offset": "-20px"
+            })
+        } else {
+            $(e.target).css({
+                "background-color": "orange",
+                "outline-offset": "-10px"
+            })
+        }
+    } //드래그 시의 동작을 결정하는 함수
+
+    function uploadFiles(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        //console.log("뭔가 이미 파일을 올렸네" + files[0].name)
+        e.dataTransfer = e.originalEvent.dataTransfer;
+        files = e.target.files || e.dataTransfer.files;
+
+        if (files.length > 1) {
+            alert('하나만 올려라.');
+            return;
+        }
+
+        if (files[0].type.match(/image.*/)) {
+            $('#first_modal').css({ //이미지를 업로드한 순간 모달1은 내리고 2를 띄움
+                display: 'none'
+            })
+            $('#second_modal').css({
+                display: 'flex'
+            })
+            $('.img_upload_space').css({
+                "background-image": "url(" + window.URL.createObjectURL(files[0]) + ")",
+                "outline": "none",
+                "background-size": "100%",
+                "background-repeat": "no-repeat",
+                "background-position": "center"
+            })
+        } else {
+            alert("이미지가 아닙니다.")
+            return;
+        }
+    } //사진 업로드 시의 동작을 결정하는 함수
+
+
+    $('.modal_close').click(function () {
+        $('.modal_overlay').css({
+            display: "none"
+        })
+        $(document.body).css({
+            overflow: "visible"
+        })
+    }) //x 버튼 누르면 모달창 꺼지도록 함
+    $('#button_profile_upload').click(function () {
+        $('#input_fileupload').click();
+    })
+
+    function profile_upload() {
+        let file = $('#input_fileupload')[0].files[0]; //파일 및 데이터 정리
+        let email = "{{ user.email }}";
+
+        let fd = new FormData();
+
+        fd.append('file', file);
+        fd.append('email', email);
+
+        $.ajax({
+                url: "/user/profile/upload",
+                data: fd,
+                method: "POST",
+                processData: false,
+                contentType: false,
+                success: function (data) {
+                    console.log('성공');
+                },
+                error: function (request, status, error) {
+                    console.log('에러');
+                },
+                complete: function () {
+                    console.log('완료');
+                    location.replace("/content/profile");
+                },
+            }
+        )
+    }
+</script>
+
+</body>
+<!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+        crossorigin="anonymous"></script>
+</html>

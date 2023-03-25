@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <!--jQuery-->
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+<style>
+    body {
+        background-color: #FAFAFA;
+    }
+
+    ::placeholder {
+        font-size: 14px;
+        color: gray;
+    }
+
+    .center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .join {
+        border: 1px solid rgba(219, 219, 219, 1);
+        width: 400px;
+        height: 570px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        margin-top: 20px;
+    }
+
+</style>
+<body>
+<div class="center">
+    <div class="join">
+        <div><img style="width: 200px; margin-top: 20px"
+                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/2560px-Instagram_logo.svg.png">
+        </div>
+        <div style="color: gray; text-align: center; margin: 10px; max-width: 70%; font-size: 18px"><b>친구들의 사진과 동영상을
+            보려면<br/>가입하세요.</b></div>
+        <button type="button" class="btn btn-primary"
+                style="width: 70%; margin-top: 10px; margin-bottom: 5px"><b>Facebook으로 로그인</b>
+        </button>
+        <div style="display: flex; flex-direction: row; justify-content: space-between; margin: 10px 0px; max-width: 70%">
+            <hr style="width: 115px; margin-right: 10px; background-color: gray">
+            <div style="font-size: 13px; margin-top: 5px; color: gray"><b>또는</b></div>
+            <hr style="width: 115px; margin-left: 10px; background-color: gray">
+        </div>
+
+        <div class="form-floating mb-3" style="margin: -7px">
+            <input type="email" class="form-control" id="input_email" placeholder="이메일 주소"
+                   style="height: 24px; width: 280px; background-color: #FAFAFA">
+            <label for="input_email" style="font-size: 13px; padding: 4px 10px; color: gray;">이메일 주소</label>
+        </div>
+        <div class="form-floating mb-3" style="margin: -7px">
+            <input type="text" class="form-control" id="input_name" placeholder="성명"
+                   style="height: 24px; width: 280px; background-color: #FAFAFA">
+            <label for="input_name" style="font-size: 13px; padding: 4px 10px; color: gray;">성명</label>
+        </div>
+        <div class="form-floating mb-3" style="margin: -7px">
+            <input type="text" class="form-control" id="input_nickname" placeholder="닉네임"
+                   style="height: 24px; width: 280px; background-color: #FAFAFA">
+            <label for="input_nickname" style="font-size: 13px; padding: 4px 10px; color: gray;">닉네임</label>
+        </div>
+        <div class="form-floating mb-3" style="margin: -7px">
+            <input type="password" class="form-control" id="input_password" placeholder="비밀번호"
+                   style="height: 24px; width: 280px; background-color: #FAFAFA">
+            <label for="input_password" style="font-size: 13px; padding: 4px 10px; color: gray;">비밀번호</label>
+        </div>
+        <button type="button" class="btn btn-primary" id="join_button"
+                style="width: 70%; margin-top: 10px"><b>가입</b>
+        </button>
+        <div style="color: gray; text-align: center; margin: 10px; max-width: 60%; font-size: 13px">가입하면 Instagram의 <b>약관,
+            데이터 정책</b> 및 <b>쿠키 정책</b>에 동의하게 됩니다.
+        </div>
+    </div>
+    <div class="join" style="height: 100px; margin-top: 10px">
+        <div style="font-size: 14px; line-height: 100px">계정이 있으신가요? <a href="login">로그인</a></div>
+    </div>
+</div>
+<script>
+    $('#join_button').click(function () {
+        let email = $('#input_email').val();
+        let password = $('#input_password').val();
+        let nickname = $('#input_nickname').val();
+        let name = $('#input_name').val();
+
+        $.ajax({
+            url: "/user/join",
+            data: {
+                email:email,
+                password:password,
+                nickname:nickname,
+                name:name
+            },
+            method: "POST",
+            {#dataType:"json",#}
+            success: function (data) {
+                console.log('성공');
+                alert("회원가입 성공, 로그인해주세요.")
+                location.replace("/user/login")
+            },
+            error: function (request, status, error) {
+                console.log('에러');
+            },
+            complete: function () {
+                console.log('완료');
+            }
+
+        }) //views.py의 UploadFeed Class로 보내기
+
+
+    })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+        crossorigin="anonymous"></script>
+</body>
+</html>
