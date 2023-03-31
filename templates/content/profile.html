@@ -206,7 +206,7 @@
     </div>
 </nav> <!--내비게이션 바-->
 <div style="display: flex; flex-direction: row; padding-top: 100px; text-align: center; justify-content: left; padding-left: 200px">
-    <div style="padding: 10px 130px">
+    <div style="margin: 10px 130px 10px 370px">
         <div class="square" style="width: 125px; height: 125px">
             <img src="{% get_media_prefix %}{{ user.profile_image }}"
                  class="box" style="width: 125px; height: 125px">
@@ -242,7 +242,7 @@
 <div>
     <div style="position: relative">
         <div style="border-top: solid 1px lightgray; width: 80%; margin-top: 10px; margin-left: 10%"></div>
-        <div id="border_1" style="border-top: solid 2px black; width: 100px; margin-left: 572px; margin-top: -1px"></div>
+        <div id="border_1" style="position: sticky; border-top: solid 2px black; width: 102px; left: 40%; margin-top: -1px"></div>
     </div>
     <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding-top: 20px">
         <div id="button_feed" class="profile_class" style="cursor: pointer; color: black"><span
@@ -346,7 +346,7 @@
 <script>
     $('#button_feed').click(function () {
         $('#border_1').css({
-            marginLeft: "572px"
+            left: "40%"
         })
         $('#button_feed,#button_feed_2').css({
             color: "black"
@@ -369,7 +369,7 @@
     })
     $('#button_like').click(function () {
         $('#border_1').css({
-            marginLeft: "713px"
+            left: "47.4%"
         })
         $('#button_feed,#button_feed_2').css({
             color: "gray"
@@ -392,7 +392,7 @@
     })
     $('#button_bookmark').click(function () {
         $('#border_1').css({
-            marginLeft: "854px"
+            left: "54.9%"
         })
         $('#button_feed,#button_feed_2').css({
             color: "gray"
